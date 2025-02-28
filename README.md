@@ -1,3 +1,5 @@
+![Static Badge](https://img.shields.io/badge/Security_Support-Not_Supported-red)
+
 # Silicon Labs Bluetooth Applications Community #
 
 
