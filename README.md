@@ -2,7 +2,6 @@
 
 # Silicon Labs Bluetooth Applications Community #
 
-
 The Silicon Labs Bluetooth Application repository stack allows for a wide variety applications to be built on its foundation. This repo showcases some example applications using the Silicon Labs Bluetooth stack.
 
 This repository provides both SLCP projects (as External Repositories) and SLS projects as standalone projects, which are configured for development boards.
@@ -32,7 +31,6 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 ### Moderator list
 
   - Who is responsible for what ( contributors, siliconlabs moderator - maybe our team)
-
 
 ## Project list ##
 
