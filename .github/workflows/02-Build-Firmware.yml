@@ -15,7 +15,7 @@ env:
   WORKSPACE: ${{ github.workspace }}
   CI_REPO_DIR: ${{ github.workspace }}/application_examples_ci
   repo: ${{ github.repository }}
-  merge_branch: main
+  # merge_branch: main
 
 jobs:
   Build-Firmware:
@@ -30,10 +30,11 @@ jobs:
 
       - name: Poll the change
         run: |
-          ls projects
+          target_branch=${{ github.event.repository.default_branch }}
+
           cd projects
-          git fetch origin $merge_branch
-          git diff --name-only origin/$merge_branch HEAD | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
+          git fetch origin $target_branch
+          git diff --name-only origin/$target_branch HEAD | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
           # Skip check if the changed files are at the root path: e.g. README.md, .github, LICENSE
           grep -v "README.md\\|.github\\|LICENSE\\|templates.xml\\|tools" git_log.txt > git_diff.txt
           xargs -I{} -a git_diff.txt find {} -type f -name "*.[ch]" > source_list.txt
