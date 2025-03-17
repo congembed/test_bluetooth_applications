@@ -32,9 +32,11 @@ jobs:
               fi
             fi
     - name: Checkout
-      uses: actions/checkout@v4.1.7
+      uses: actions/checkout@v4
       with:
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
+
     - name: Log Current Branch and Commit
       run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"

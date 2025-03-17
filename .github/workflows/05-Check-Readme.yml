@@ -8,12 +8,13 @@ jobs:
   Check-README:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out this repo
+      - name: Checkout this repo
         uses: actions/checkout@v4
         with:
           path: 'projects'
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name: Check out scripts branch
+      - name: Checkout scripts branch
         uses: actions/checkout@v4
         with:
           repository: SiliconLabsSoftware/aep_ci_tools
