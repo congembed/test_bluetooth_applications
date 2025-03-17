@@ -1,0 +1,107 @@
+name: 04-SonarQube
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+
+  workflow_dispatch:
+
+env:
+  GH_PAGE_ROOT_URL: https://siliconlabssoftware.github.io/aep_ci_tools
+
+jobs:
+  check-sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v4
+        with:
+          path: 'projects'
+          fetch-depth: '0'
+
+      - name: Trigger Workflow
+        id: trigger
+        run: |
+          echo $GITHUB_HEAD_REF
+          echo ==============
+
+          response=$(curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            https://api.github.com/repos/SiliconLabsSoftware/aep_ci_tools/actions/workflows/sandbox_trigger_sonar.yml/dispatches \
+            -d '{"ref":"main","inputs":{"repository": "${{ github.repository }}" ,"ref":"${{ github.head_ref }}"}}')
+          
+          echo "Triggered workflow: $response"
+          if echo "$response" | grep -q '"message": "Not Found"'; then
+            echo "Error: Workflow or repository not found. Please check the repository name, workflow file name, and branch name."
+            exit 1
+          fi
+
+      - name: Wait for Check-Time Workflow to Complete
+        id: wait
+        env:
+          TIMEOUT: 1800
+        run: |
+          sleep 3
+          run_id=$(curl -s \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            https://api.github.com/repos/SiliconLabsSoftware/aep_ci_tools/actions/runs \
+            | jq '.workflow_runs[] | select(.name=="Trigger_Sonar") | .id' | head -n 1)
+          echo "Run ID: $run_id"
+          
+          start_time=$(date +%s)
+          while true; do
+            current_time=$(date +%s)
+            elapsed_time=$((current_time - start_time))
+            if [ $elapsed_time -ge $TIMEOUT ]; then
+              echo "Error: Workflow did not complete within $((TIMEOUT / 60)) minutes."
+              exit 1
+            fi
+            
+            ##########################################
+            status=$(curl -s \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+              https://api.github.com/repos/SiliconLabsSoftware/aep_ci_tools/actions/runs/$run_id \
+              | jq -r '.status')
+            
+            conclusion=$(curl -s \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+              https://api.github.com/repos/SiliconLabsSoftware/aep_ci_tools/actions/runs/$run_id \
+              | jq -r '.conclusion')
+            
+            echo "Status: $status, Conclusion: $conclusion"
+            if [[ "$status" == "completed" ]]; then
+              if [[ "$conclusion" == "success" ]]; then
+                echo "Workflow completed successfully."
+                exit 0
+              else
+                echo "TRIGGER_SONAR=failure" >> $GITHUB_ENV
+                echo "Workflow failed."
+                exit 0
+              fi
+            fi
+            sleep 3
+          done
+
+      - name: Got Sonar report
+        run: |
+          target_branch=${{ github.event.repository.default_branch }}
+
+          # Get unique 8 SHA number for each Pull request
+          cd projects
+          git fetch origin $target_branch
+          commit_id=$(git merge-base HEAD origin/$target_branch)
+          COMMIT_8_SHA=${commit_id::8}
+
+          SONAR_REPORT_URL=$GH_PAGE_ROOT_URL/$COMMIT_8_SHA/sonar_report.html
+
+          if [[ "$TRIGGER_SONAR" == "failure" ]]; then
+            echo "Workflow failed."
+            if curl --output /dev/null --silent --head --fail "$SONAR_REPORT_URL"; then
+              echo "View Sonarqube result check at url: $SONAR_REPORT_URL"
+            else
+              echo "SonarQube ran failed! Did not found SonarQube report!"
+            fi
+          fi
