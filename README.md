@@ -11,7 +11,7 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 1. Fork this repository
 2. Clone your fork to your local machine
 3. Adding your project into separate folder, make sure to ...
-4. Create a Pull Request (PR) and discribe your changes
+4. Create a Pull Request (PR) and describe your changes
 5. Wait for feedback and get merged - normally it will take 5 working days ...
 
 ## Contribution Guidelines
