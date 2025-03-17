@@ -3,7 +3,7 @@ name: 02-Build-Firmware
 on:
   pull_request:
     types: [opened, synchronize, edited]
-  
+
   # pull_request:
   #   types: [opened, synchronize, edited]
 
@@ -16,7 +16,7 @@ env:
   CI_REPO_DIR: ${{ github.workspace }}/application_examples_ci
   repo: ${{ github.repository }}
   merge_branch: main
-  
+
 jobs:
   Build-Firmware:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           path: 'projects'
-              
+
       - name: Poll the change
         run: |
           ls projects
@@ -54,11 +54,11 @@ jobs:
           curl -L -o slccli.zip https://www.silabs.com/documents/login/software/slc_cli_linux.zip
           unzip slccli.zip -d tools > /dev/null && rm slccli.zip
           chmod +x $SL_SLC_PATH
-          
+
           curl -L -o ss.tgz $SS_URL
           tar -xvf ss.tgz -C tools > /dev/null && rm ss.tgz
           chmod +x $SL_STUDIO_BUILD_PATH/developer/toolchains/gnu_arm/10.3_2021.10
-          
+
           curl -L -o 12.2.tgz https://github.com/SiliconLabs/application_examples_ci/releases/download/v1.2/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
           tar -xvf 12.2.tgz -C $SL_STUDIO_BUILD_PATH/developer/toolchains/gnu_arm > /dev/null
           ls $SL_STUDIO_BUILD_PATH/developer/toolchains/gnu_arm
@@ -76,7 +76,7 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           path: 'pr_check'
 
-      
+
       ###########################################################
       - name: Checkout json ci repo
         uses: actions/checkout@v4
@@ -89,11 +89,11 @@ jobs:
           $SL_SLC_PATH configuration -gcc $ARM_GCC_DIR
           mkdir changed_projects
           while read line; do cp -r ./projects/$line --parents ./changed_projects; done < projects/git_diff.txt
-          
+
           export SCRIPT_PATH=${{ github.workspace }}/pr_check/scripts/checkproject_sandbox.py
           export PROJECT_PATH=${{ github.workspace }}/changed_projects
           python3 -u $SCRIPT_PATH --junit --html --release --slcpgcc --sls $PROJECT_PATH
-          
+
           # cat ${{ github.workspace }}/build_test_project.log
           GREP_COLORS='mt=32' grep --color=always 'Pass\|$' ${{ github.workspace }}/build_test_project.log | GREP_COLORS='mt=31' grep --color=always 'Fail\|$'
           if grep -qe "Fail" ${{ github.workspace }}/build_test_project.log; then

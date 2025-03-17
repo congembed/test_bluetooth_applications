@@ -24,7 +24,7 @@ This code example referred to the following code examples. More detailed informa
 - [Buzzer driver](https://github.com/SiliconLabs/third_party_hw_drivers_extension/tree/master/driver/public/mikroe/buzz2_cmt_8540s_smt)
 - [Bluetooth security feature](https://github.com/SiliconLabs/bluetooth_stack_features/tree/master/security)
 
-## Gecko SDK version ##
+## SDK version ##
 
 - GSDK v4.4.0
 - [Third-Party Hardware Drivers v2.0.0.0](https://github.com/SiliconLabs/third_party_hw_drivers_extension)
