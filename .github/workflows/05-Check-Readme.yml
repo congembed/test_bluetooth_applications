@@ -1,0 +1,56 @@
+name: 05-Check-README
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+
+jobs:
+  Check-README:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+        with:
+          path: 'projects'
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Checkout scripts branch
+        uses: actions/checkout@v4
+        with:
+          repository: SiliconLabsSoftware/aep_ci_tools
+          ref: 'pull_request_process'
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: 'pr_check'
+
+      - name: Poll the change
+        run: |
+          target_branch=${{ github.event.repository.default_branch }}
+
+          cd projects
+          git fetch origin $target_branch
+          git diff --name-only origin/$target_branch HEAD | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
+          # Skip check if the changed files are at the root path: e.g. README.md, .github, LICENSE
+          grep -v "README.md\\|.github\\|LICENSE\\|templates.xml\\|tools" git_log.txt > git_diff.txt
+
+          xargs -I{} -a git_diff.txt find {} -type f -name "*.[ch]" > source_list.txt
+          xargs -I{} -a git_diff.txt find {} -type f -name "*.slcp" > solution_list.txt
+
+          if ! [ -s source_list.txt -o -s solution_list.txt ]; then
+            printf 'Skip check. No changed project found.'
+            exit 1
+          fi
+
+          # For debug
+          cat git_diff.txt
+
+      - name: Check README.md files
+        run: |
+          cd projects
+          bash ${{ github.workspace }}/pr_check/scripts/check_readme_file_sandbox.sh git_diff.txt > readme_file_report.log
+          GREP_COLORS='mt=32' grep --color=always 'PASS\|$' readme_file_report.log | GREP_COLORS='mt=31' grep --color=always 'FAILURE\|$'
+          if grep -qe "FAILURE" readme_file_report.log; then
+            echo "README.md file did not follow standard structure. Pls correct it."
+            exit 1
+          else
+            echo "README.md file followed standard structure"
+          fi

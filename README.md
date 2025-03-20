@@ -1,5 +1,6 @@
-# Silicon Labs Bluetooth Applications Community #
+![Static Badge](https://img.shields.io/badge/Security_Support-Not_Supported-red)
 
+# Silicon Labs Bluetooth Applications Community #
 
 The Silicon Labs Bluetooth Application repository stack allows for a wide variety applications to be built on its foundation. This repo showcases some example applications using the Silicon Labs Bluetooth stack.
 
@@ -10,7 +11,7 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 1. Fork this repository
 2. Clone your fork to your local machine
 3. Adding your project into separate folder, make sure to ...
-4. Create a Pull Request (PR) and discribe your changes
+4. Create a Pull Request (PR) and describe your changes
 5. Wait for feedback and get merged - normally it will take 5 working days ...
 
 ## Contribution Guidelines
@@ -30,7 +31,6 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 ### Moderator list
 
   - Who is responsible for what ( contributors, siliconlabs moderator - maybe our team)
-
 
 ## Project list ##
 
