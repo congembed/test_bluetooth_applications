@@ -33,16 +33,17 @@ jobs:
                 exit 1
               fi
             fi
+
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
 
     - name: Log Current Branch and Commit
       run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
+    
     - name: Install python3.11
       if: always()
       run: |
@@ -60,6 +61,7 @@ jobs:
         which python3.11
         sudo apt install python3.11-full
         curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.11
+    
     - name: Install commit check tools
       run: |
           echo "Installing pre-commit ..."
@@ -80,6 +82,7 @@ jobs:
           sudo cp ./tools/uncrustify.cfg ./uncrustify/uncrustify.cfg
           echo "Install clang-tidy and cppcheck ..."
           sudo apt install clang-tidy cppcheck
+    
     - name: Run test
       run: |
         pre-commit install
@@ -92,6 +95,7 @@ jobs:
         name: CodingConventionResult
         path: CodingConventionTool.txt
         retention-days: 90
+    
     - name: Check log file to set status of the job
       run: |
         keywords=("Failed")
