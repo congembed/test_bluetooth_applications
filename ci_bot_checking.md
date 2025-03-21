@@ -3,7 +3,7 @@ Project guideline
 
 ## Structure of projects
 
-Suported project type: .sls or .slcp
+Supported project type: .sls or .slcp
 
 ![image](doc/sandbox/project_structure.png)
 
@@ -11,7 +11,7 @@ SimplicityStudio: Save project file .slcp or .sls
 
 inc: Header file (.h, etc)
 
-src: All sorce .c, .cpp files
+src: All source .c, .cpp files
 
 ## CI-Bot checking
 
@@ -37,7 +37,7 @@ If checking Fail, it will show the details: which files error.
 
 
 ### 2. Check README.md file
-   
+
 Please add all necessary title on your README.md file
 
 The list of title need to be added into README.md file
@@ -76,7 +76,7 @@ NOTE: Don't use private link in README file like github _staging or silabs priva
 If you list any image file on README.md but on .slcp file you don't add it. It will be failure.
 
 ### Build Firmware
-   
+
 It will build project and verify that there are no error and no warning in your projects.
 
 ![image](doc/sandbox/check_build.png)
