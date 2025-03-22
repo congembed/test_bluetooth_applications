@@ -125,9 +125,11 @@ void sl_bt_bgm_racp_handler(sl_bt_msg_t *evt)
     case REPORT_NUMBER_OF_STORED_RECORDS:
       sl_bt_bgm_report_num_records(evt);
       break;
-    default:
-      app_log("unsupported opcode\n");
-      sl_bt_bgm_unsupported_opcode(connection, opcode);
-      break;
+    
+    // Cong changed to test Sonarqube
+    // default:
+    //   app_log("unsupported opcode\n");
+    //   sl_bt_bgm_unsupported_opcode(connection, opcode);
+    //   break;
   }
 }

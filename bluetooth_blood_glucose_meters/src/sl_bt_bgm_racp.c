@@ -135,15 +135,18 @@ void sl_bt_bgm_report_record(sl_bt_msg_t *evt)
     case OPERATOR_FIRST:
       app_log("read first record\n");
       sl_bt_bgm_report_first_record(connection);
-      break;
+      // Cong changed to test Sonarqube
+      // break;
     case OPERATOR_LAST:
       app_log("read last record\n");
       sl_bt_bgm_report_last_record(connection);
       break;
-    default:
-      app_log("read record unsupported operator\n");
-      sl_bt_bgm_unsupported_operator(connection);
-      break;
+
+    // Cong changed to test Sonarqube
+    // default:
+    //   app_log("read record unsupported operator\n");
+    //   sl_bt_bgm_unsupported_operator(connection);
+    //   break;
   }
 }
 

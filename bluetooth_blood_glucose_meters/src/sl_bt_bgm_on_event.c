@@ -64,8 +64,9 @@ void sl_bt_start_adv(void);
 static void sl_bgm_fast_adv_timeout(sl_sleeptimer_timer_handle_t *handle,
                                     void *data)
 {
-  (void)&handle;
-  (void)&data;
+  // Cong changed to test Sonarqube
+  // (void)&handle;
+  // (void)&data;
 
   sl_bt_external_signal(SIGNAL_FAST_ADV_TIMEOUT);
 }
