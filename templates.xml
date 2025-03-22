@@ -14,4 +14,19 @@
   <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced Wireless\ Technology|Bluetooth"/>
   <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
   </descriptors>
+  <descriptors name="bluetooth_blood_glucose_meters" label="Bluetooth - Blood Glucose Meters"
+               description="This project aims to implement the Bluetooth Glucose Profile. This shows an example of Blood Glucose Meters using the Thunderboard EFR32BG22.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="projectFilePaths" value="bluetooth_blood_glucose_meters/SimplicityStudio/bluetooth_blood_glucose_meters.slcp"/>
+    <properties key="readmeFiles" value="bluetooth_blood_glucose_meters/README.md"/>
+    <properties key="boardCompatibility" value="brd4184a brd4166a brd4314a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g22.* .*[bm]gm22.* .*efr32mg12.*"/>
+    <properties key="ideCompatibility" value="iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Bluetooth Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced Wireless\ Technology|Bluetooth"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
 </model:MDescriptors>
