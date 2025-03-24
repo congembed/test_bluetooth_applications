@@ -73,6 +73,9 @@ void sl_bt_bgm_measurement_notification_handler(sl_bt_msg_t *evt)
   }
 }
 
+void otPlatLog(otLogLevel aLogLevel, otLogRegion aLogRegion, const char *aFormat, ...) {
+  app_log("Test Fail sonar");
+}
 /**************************************************************************//**
  * add a glucose measurement record
  *****************************************************************************/
